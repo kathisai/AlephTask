@@ -11,16 +11,36 @@ import io.com.alephtask.R;
 public class Shop {
     private String name;
     private String distance;
-    private String visitedCount;
-    private String totalCount;
+    private int visitedCount;
+    private int totalCount;
     private int imageResorce;
+    private int type;
 
-    public Shop(String name, String distance, String visitedCount, String totalCount, int imageResorce) {
+    public Shop(String name, String distance, int visitedCount, int totalCount, int imageResorce, int type) {
         this.name = name;
         this.distance = distance;
         this.visitedCount = visitedCount;
         this.totalCount = totalCount;
         this.imageResorce = imageResorce;
+        this.type = type;
+    }
+
+    public static ArrayList<Shop> createContactsList(int numContacts, int type) {
+        ArrayList<Shop> contacts = new ArrayList<Shop>();
+
+        for (int i = 1; i <= numContacts; i++) {
+            contacts.add(new Shop("Name", "30", 40, 100, R.drawable.ic_color_paint_black_24dp, type));
+        }
+
+        return contacts;
+    }
+
+    public int getType() {
+        return type;
+    }
+
+    public void setType(int type) {
+        this.type = type;
     }
 
     public String getName() {
@@ -39,19 +59,19 @@ public class Shop {
         this.distance = distance;
     }
 
-    public String getVisitedCount() {
+    public int getVisitedCount() {
         return visitedCount;
     }
 
-    public void setVisitedCount(String visitedCount) {
+    public void setVisitedCount(int visitedCount) {
         this.visitedCount = visitedCount;
     }
 
-    public String getTotalCount() {
+    public int getTotalCount() {
         return totalCount;
     }
 
-    public void setTotalCount(String totalCount) {
+    public void setTotalCount(int totalCount) {
         this.totalCount = totalCount;
     }
 
@@ -61,16 +81,5 @@ public class Shop {
 
     public void setImageResorce(int imageResorce) {
         this.imageResorce = imageResorce;
-    }
-
-
-    public static ArrayList<Shop> createContactsList(int numContacts) {
-        ArrayList<Shop> contacts = new ArrayList<Shop>();
-
-        for (int i = 1; i <= numContacts; i++) {
-            contacts.add(new Shop("Name","30","40","100", R.drawable.ic_send_black_24dp));
-        }
-
-        return contacts;
     }
 }

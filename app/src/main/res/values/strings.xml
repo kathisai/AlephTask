@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Aleph Task</string>
+    <string name="shop_statistics">%d of %d</string>
 </resources>
