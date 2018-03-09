@@ -1,5 +1,6 @@
 package io.com.alephtask;
 
+import android.animation.ValueAnimator;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
@@ -16,6 +17,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.animation.DecelerateInterpolator;
 import android.view.animation.LayoutAnimationController;
+import android.view.animation.TranslateAnimation;
 import android.widget.ImageView;
 
 import java.lang.reflect.Field;
@@ -42,9 +44,9 @@ public class MainActivity extends BaseActivity {
 
     @BindView(R.id.swipeRefreshLayout)
     SwipeRefreshLayout mSwipeRefreshLayout;
-    private boolean temp = true;
+    int mToolbarHeight, mAnimDuration = 600/* milliseconds */;
+    ValueAnimator mVaActionBar;
     private ShopAdapter mAdapter;
-
     private ArrayList<Shop> dataList = new ArrayList<>();
 
     @Override
@@ -60,19 +62,44 @@ public class MainActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 //What to do on back clicked
-                hideToolBarAndBottomBar();
-
+                hideActionBar();
+                slideDown(bottomNavigationView);
                 int resId = R.anim.layout_animation_right_left;
                 LayoutAnimationController animation = AnimationUtils.loadLayoutAnimation(recyclerView.getContext(), resId);
+                recyclerView.setLayoutAnimationListener(null);
                 recyclerView.setLayoutAnimation(animation);
                 recyclerView.getAdapter().notifyDataSetChanged();
                 recyclerView.scheduleLayoutAnimation();
+
+                recyclerView.setLayoutAnimationListener(new Animation.AnimationListener() {
+                    @Override
+                    public void onAnimationStart(Animation animation) {
+
+                    }
+
+                    @Override
+                    public void onAnimationEnd(Animation animation) {
+
+                        dataList.clear();
+                        dataList.addAll(Shop.createContactsList(2, 1));
+                        recyclerView.getAdapter().notifyDataSetChanged();
+                        recyclerView.setLayoutAnimationListener(null);
+//                recyclerView.scheduleLayoutAnimation();
+                    }
+
+                    @Override
+                    public void onAnimationRepeat(Animation animation) {
+
+                    }
+                });
+//
+
             }
         });
-
-        showToolBarAndBottomBar();
         setupRecycler();
         setupPullDownListener();
+        slideDown(bottomNavigationView);
+        hideActionBar();
     }
 
     private void setupPullDownListener() {
@@ -90,6 +117,7 @@ public class MainActivity extends BaseActivity {
             @Override
             public void onRefresh() {
                 // do something
+                showActionBar();
                 dataList.clear();
                 dataList.addAll(Shop.createContactsList(11, 0));
                 runLayoutAnimation(recyclerView);
@@ -107,66 +135,20 @@ public class MainActivity extends BaseActivity {
         return true;
     }
 
-    private void hideToolBarAndBottomBar(){
-        appBarLayout.animate().translationY(-appBarLayout.getBottom()).setInterpolator(new AccelerateInterpolator()).start();
-        appBarLayout.setLayoutAnimationListener(new Animation.AnimationListener() {
-            @Override
-            public void onAnimationStart(Animation animation) {
 
-            }
-
-            @Override
-            public void onAnimationEnd(Animation animation) {
-                appBarLayout.setVisibility(View.GONE);
-            }
-
-            @Override
-            public void onAnimationRepeat(Animation animation) {
-
-            }
-        });
-        slideDown(bottomNavigationView);
-
-    }
-
-    private void showToolBarAndBottomBar(){
-        if (appBarLayout.getVisibility() == View.GONE) {
-            appBarLayout.setVisibility(View.VISIBLE);
-            appBarLayout.animate().translationY(0).setInterpolator(new DecelerateInterpolator()).start();
-        }
-
-        slideUp(bottomNavigationView);
-    }
-
-    private void slideUp(BottomNavigationView child) {
-        if (child.getVisibility() == View.GONE) {
-            child.setVisibility(View.VISIBLE);
-            child.clearAnimation();
-            child.animate().translationY(0).setDuration(200000);
-        }
-
-    }
-
-    private void slideDown(final BottomNavigationView child) {
-        child.clearAnimation();
-        child.animate().translationY(child.getHeight()).setDuration(200);
-        child.setLayoutAnimationListener(new Animation.AnimationListener() {
-            @Override
-            public void onAnimationStart(Animation animation) {
-
-            }
-
-            @Override
-            public void onAnimationEnd(Animation animation) {
-                child.setVisibility(View.GONE);
-            }
-
-            @Override
-            public void onAnimationRepeat(Animation animation) {
-
-            }
-        });
-    }
+//    private void slideUp(BottomNavigationView child) {
+//        if (child.getVisibility() == View.GONE) {
+//            child.setVisibility(View.VISIBLE);
+//            child.clearAnimation();
+//            child.animate().translationY(0).setDuration(2000);
+//        }
+//
+//    }
+//
+//    private void slideDown(final BottomNavigationView child) {
+//        child.clearAnimation();
+//        child.animate().translationY(child.getHeight()).setDuration(200);
+//    }
 
 
     private void runLayoutAnimation(final RecyclerView recyclerView) {
@@ -177,6 +159,22 @@ public class MainActivity extends BaseActivity {
         recyclerView.setLayoutAnimation(controller);
         recyclerView.getAdapter().notifyDataSetChanged();
         recyclerView.scheduleLayoutAnimation();
+        recyclerView.setLayoutAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                slideUp(bottomNavigationView);
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+
+            }
+        });
     }
 
     private void setupRecycler() {
@@ -190,6 +188,114 @@ public class MainActivity extends BaseActivity {
 
         recyclerView.addItemDecoration(
                 new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
+    }
+
+
+    // slide the view from below itself to the current position
+    public void slideUp(View view) {
+        view.setVisibility(View.VISIBLE);
+        TranslateAnimation animate = new TranslateAnimation(
+                0,                 // fromXDelta
+                0,                 // toXDelta
+                view.getHeight(),  // fromYDelta
+                0);                // toYDelta
+        animate.setDuration(800);
+        animate.setFillAfter(true);
+        view.startAnimation(animate);
+    }
+
+    // slide the view from its current position to below itself
+    public void slideDown(View view) {
+        TranslateAnimation animate = new TranslateAnimation(
+                0,                 // fromXDelta
+                0,                 // toXDelta
+                0,                 // fromYDelta
+                view.getHeight()); // toYDelta
+        animate.setDuration(800);
+        animate.setFillAfter(true);
+        view.startAnimation(animate);
+    }
+
+
+    void hideActionBar() {
+        appBarLayout.animate().translationY(-appBarLayout.getBottom()).setInterpolator(new AccelerateInterpolator()).start();
+
+
+//        // initialize `mToolbarHeight`
+//        if (mToolbarHeight == 0) {
+//            mToolbarHeight = toolbar.getHeight();
+//        }
+//
+//        if (mVaActionBar != null && mVaActionBar.isRunning()) {
+//            // we are already animating a transition - block here
+//            return;
+//        }
+//
+//        // animate `Toolbar's` height to zero.
+//        mVaActionBar = ValueAnimator.ofInt(mToolbarHeight , 0);
+//        mVaActionBar.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+//            @Override
+//            public void onAnimationUpdate(ValueAnimator animation) {
+//                // update LayoutParams
+//                ((AppBarLayout.LayoutParams)toolbar.getLayoutParams()).height
+//                        = (Integer)animation.getAnimatedValue();
+//                toolbar.requestLayout();
+//            }
+//        });
+//
+//        mVaActionBar.addListener(new AnimatorListenerAdapter() {
+//            @Override
+//            public void onAnimationEnd(Animator animation) {
+//                super.onAnimationEnd(animation);
+//
+//                if (getSupportActionBar() != null) { // sanity check
+//                    getSupportActionBar().hide();
+//                }
+//            }
+//        });
+//
+//        mVaActionBar.setDuration(mAnimDuration);
+//        mVaActionBar.start();
+    }
+
+    void showActionBar() {
+        if (appBarLayout.getVisibility() == View.GONE) {
+            appBarLayout.setVisibility(View.VISIBLE);
+            appBarLayout.clearAnimation();
+            appBarLayout.animate().translationY(0).setDuration(600).setInterpolator(new DecelerateInterpolator()).start();
+        }
+
+
+//        if (mVaActionBar != null && mVaActionBar.isRunning()) {
+//            // we are already animating a transition - block here
+//            return;
+//        }
+//
+//        // restore `Toolbar's` height
+//        mVaActionBar = ValueAnimator.ofInt(0 , mToolbarHeight);
+//        mVaActionBar.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+//            @Override
+//            public void onAnimationUpdate(ValueAnimator animation) {
+//                // update LayoutParams
+//                ((AppBarLayout.LayoutParams)toolbar.getLayoutParams()).height
+//                        = (Integer)animation.getAnimatedValue();
+//                toolbar.requestLayout();
+//            }
+//        });
+//
+//        mVaActionBar.addListener(new AnimatorListenerAdapter() {
+//            @Override
+//            public void onAnimationStart(Animator animation) {
+//                super.onAnimationStart(animation);
+//
+//                if (getSupportActionBar() != null) { // sanity check
+//                    getSupportActionBar().show();
+//                }
+//            }
+//        });
+//
+//        mVaActionBar.setDuration(mAnimDuration);
+//        mVaActionBar.start();
     }
 
 }
