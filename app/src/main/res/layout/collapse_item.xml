@@ -9,9 +9,9 @@
         android:id="@+id/iv_shop_image"
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_weight="2"
+        android:layout_weight="0"
         android:src="@drawable/ic_color_paint_black_24dp"
-        android:visibility="gone" />
+        android:visibility="visible" />
     <LinearLayout
         android:layout_width="0dp"
         android:layout_height="match_parent"

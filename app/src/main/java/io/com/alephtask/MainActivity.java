@@ -7,13 +7,11 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
-import android.transition.Fade;
 import android.transition.Slide;
 import android.transition.Transition;
 import android.transition.TransitionInflater;
 import android.view.Gravity;
 import android.view.Menu;
-import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.Toast;
 
 import io.com.alephtask.adapters.ShopAdapter;
@@ -70,21 +68,14 @@ public class MainActivity extends AppCompatActivity {
 
                 Slide slideTransition = new Slide();
                 slideTransition.setSlideEdge(Gravity.LEFT);
-                slideTransition.setDuration(800);
+                slideTransition.setDuration(500);
 
-                Fade fadeIn = new Fade();
-                fadeIn.setInterpolator(new AccelerateDecelerateInterpolator());
-
-                Slide slideRightTransition = new Slide();
-                slideRightTransition.setSlideEdge(Gravity.RIGHT);
-                slideRightTransition.setDuration(3000);
-
-                newFragment.setEnterTransition(slideTransition); // done
-
+                newFragment.setEnterTransition(slideTransition);
 
                 Transition autoTransition =
                         TransitionInflater.from(this).
                                 inflateTransition(R.transition.auto_transition);
+                autoTransition.canRemoveViews();
                 newFragment.setSharedElementEnterTransition(autoTransition);
                 current.setSharedElementReturnTransition(autoTransition);
 

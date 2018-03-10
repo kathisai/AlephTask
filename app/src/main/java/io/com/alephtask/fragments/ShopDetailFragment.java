@@ -138,7 +138,7 @@ public class ShopDetailFragment extends Fragment {
                     public void run() {
                         getActivity().onBackPressed();
                     }
-                }, 800);
+                }, 500);
 
 
             }
