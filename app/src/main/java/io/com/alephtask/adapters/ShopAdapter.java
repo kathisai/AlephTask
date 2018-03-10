@@ -1,6 +1,7 @@
 package io.com.alephtask.adapters;
 
 import android.content.Context;
+import android.os.Build;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -49,12 +50,25 @@ public class ShopAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         Shop shop = mList.get(position);
         if (holder instanceof ShopCollapseViewHolder) {
             ShopCollapseViewHolder collapseViewHolder = (ShopCollapseViewHolder) holder;
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                // the view being shared
+                collapseViewHolder.shopName.setTransitionName("transition_shop" + position);
+                collapseViewHolder.shopDistance.setTransitionName("transition_distance" + position);
+                collapseViewHolder.rightArrow.setTransitionName("transition_arrow" + position);
+                collapseViewHolder.shopImage.setTransitionName("transition_shop_image" + position);
+            }
             collapseViewHolder.shopName.setText(shop.getName());
             collapseViewHolder.shopDistance.setText(shop.getDistance());
-
         } else if (holder instanceof ShopViewHolder) {
             ShopViewHolder shopViewHolder = (ShopViewHolder) holder;
-            shopViewHolder.shopeImage.setImageResource(shop.getImageResorce());
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                // the view being shared
+                shopViewHolder.shopName.setTransitionName("transition_shop" + position);
+                shopViewHolder.shopDistance.setTransitionName("transition_distance" + position);
+                shopViewHolder.rightArrow.setTransitionName("transition_arrow" + position);
+                shopViewHolder.shopImage.setTransitionName("transition_shop_image" + position);
+            }
+            shopViewHolder.shopImage.setImageResource(shop.getImageResorce());
             shopViewHolder.shopName.setText(shop.getName());
             shopViewHolder.shopStatistics.setText(String.format(mContext.getString(R.string.shop_statistics), shop.getVisitedCount(), shop.getTotalCount()));
             shopViewHolder.shopDistance.setText(shop.getDistance());
@@ -75,13 +89,15 @@ public class ShopAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     class ShopViewHolder extends RecyclerView.ViewHolder{
         @BindView(R.id.iv_shop_image)
-        ImageView shopeImage;
+        ImageView shopImage;
         @BindView(R.id.tv_shop_name)
         TextView shopName;
         @BindView(R.id.tv_shop_statistics)
         TextView shopStatistics;
         @BindView(R.id.tv_shop_distance)
         TextView shopDistance;
+        @BindView(R.id.iv_right_arrow)
+        ImageView rightArrow;
 
         public ShopViewHolder(View itemView) {
             super(itemView);
@@ -90,15 +106,37 @@ public class ShopAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     }
 
 
-    class ShopCollapseViewHolder extends RecyclerView.ViewHolder {
+    public class ShopCollapseViewHolder extends RecyclerView.ViewHolder {
         @BindView(R.id.tv_shop_name)
         TextView shopName;
         @BindView(R.id.tv_shop_distance)
         TextView shopDistance;
+        @BindView(R.id.iv_right_arrow)
+        ImageView rightArrow;
+        @BindView(R.id.iv_shop_image)
+        ImageView shopImage;
+
 
         public ShopCollapseViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
+        }
+
+        public TextView getShopName() {
+            return shopName;
+        }
+
+
+        public TextView getShopDistance() {
+            return shopDistance;
+        }
+
+        public ImageView getRightArrow() {
+            return rightArrow;
+        }
+
+        public void setRightArrow(ImageView rightArrow) {
+            this.rightArrow = rightArrow;
         }
     }
 
