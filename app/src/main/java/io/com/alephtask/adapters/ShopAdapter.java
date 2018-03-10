@@ -116,10 +116,17 @@ public class ShopAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         @BindView(R.id.iv_shop_image)
         ImageView shopImage;
 
-
         public ShopCollapseViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
+        }
+
+        public ImageView getShopImage() {
+            return shopImage;
+        }
+
+        public void setShopImage(ImageView shopImage) {
+            this.shopImage = shopImage;
         }
 
         public TextView getShopName() {

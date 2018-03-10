@@ -108,6 +108,7 @@ public class MainActivity extends AppCompatActivity {
                     fragmentTransaction.addSharedElement(collapseViewHolder.getShopName(), collapseViewHolder.getShopName().getTransitionName());
                     fragmentTransaction.addSharedElement(collapseViewHolder.getShopDistance(), collapseViewHolder.getShopDistance().getTransitionName());
                     fragmentTransaction.addSharedElement(collapseViewHolder.getRightArrow(), collapseViewHolder.getRightArrow().getTransitionName());
+                    fragmentTransaction.addSharedElement(collapseViewHolder.getShopImage(), collapseViewHolder.getShopImage().getTransitionName());
                 }
             }
 
