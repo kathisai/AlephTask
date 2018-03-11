@@ -69,7 +69,7 @@ public class ShopListFragment extends Fragment {
 
     private void setupRecycler() {
         dataList.clear();
-        dataList.addAll(Shop.createContactsList(2, 1));
+        dataList.addAll(Shop.createShopsIntialList(1));
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
         mAdapter = new ShopAdapter(dataList, getActivity());

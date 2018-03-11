@@ -48,12 +48,24 @@ public class Shop implements Parcelable {
         this.type = in.readInt();
     }
 
-    public static ArrayList<Shop> createContactsList(int numContacts, int type) {
+    public static ArrayList<Shop> createShopsList(int type) {
         ArrayList<Shop> contacts = new ArrayList<Shop>();
 
-        for (int i = 1; i <= numContacts; i++) {
-            contacts.add(new Shop("Name One", "30", 40, 100, R.drawable.ic_color_paint_black_24dp, type));
-        }
+        contacts.add(new Shop("HMV CalVin Harries Album", "248", 38, 90, R.drawable.ic_color_paint_black_24dp, type));
+        contacts.add(new Shop("Levi's 501 Release Party", "138", 16, 42, R.drawable.ic_assistant_black_24dp, type));
+        contacts.add(new Shop("Billy Bombers Hot Dog", "86", 98, 655, R.drawable.ic_beach_access_black_24dp, type));
+        contacts.add(new Shop("Starbucks Coffee Mob", "89", 7, 42, R.drawable.ic_cake_black_24dp, type));
+        contacts.add(new Shop("McDonalds Sale", "78", 16, 42, R.drawable.ic_directions_run_black_24dp, type));
+        contacts.add(new Shop("SG Air College Flights", "38", 88, 100, R.drawable.ic_flight_black_24dp, type));
+
+        return contacts;
+    }
+
+    public static ArrayList<Shop> createShopsIntialList(int type) {
+        ArrayList<Shop> contacts = new ArrayList<Shop>();
+
+        contacts.add(new Shop("HMV CalVin Harries Album", "248", 38, 90, R.drawable.ic_color_paint_black_24dp, type));
+        contacts.add(new Shop("Levi's 501 Release Party", "138", 16, 42, R.drawable.ic_assistant_black_24dp, type));
 
         return contacts;
     }

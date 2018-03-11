@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">Aleph Task</string>
-    <string name="shop_statistics">%d of %d</string>
+    <string name="shop_statistics">%d of %d people</string>
     <string name="shop_name">shared_shop_name</string>
     <string name="shop_disance">shared_shop_distance</string>
 </resources>

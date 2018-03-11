@@ -58,7 +58,7 @@ public class ShopAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 collapseViewHolder.shopImage.setTransitionName("transition_shop_image" + position);
             }
             collapseViewHolder.shopName.setText(shop.getName());
-            collapseViewHolder.shopDistance.setText(shop.getDistance());
+            collapseViewHolder.shopDistance.setText(shop.getDistance() + "m");
         } else if (holder instanceof ShopViewHolder) {
             ShopViewHolder shopViewHolder = (ShopViewHolder) holder;
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {

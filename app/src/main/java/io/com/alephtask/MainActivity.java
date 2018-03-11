@@ -19,7 +19,6 @@ import io.com.alephtask.fragments.ShopListFragment;
 
 public class MainActivity extends AppCompatActivity {
 
-    // double back pressed function
     private static long back_pressed;
 
     @Override
@@ -77,13 +76,12 @@ public class MainActivity extends AppCompatActivity {
                                 inflateTransition(R.transition.auto_transition);
                 autoTransition.canRemoveViews();
                 newFragment.setSharedElementEnterTransition(autoTransition);
-                current.setSharedElementReturnTransition(autoTransition);
 
+                current.setSharedElementReturnTransition(autoTransition);
 
                 // current.setExitTransition(slideRightTransition);
 
                 // newFragment.setEnterTransition(slideTransition);
-
 
             }
 
